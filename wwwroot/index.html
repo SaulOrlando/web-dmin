@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AdopPlant · Panel de administración</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="barra">
+    <div>
+      <h1>AdopPlant · Panel de administración</h1>
+      <p class="sub">Estadísticas en vivo de la misma base de datos que usan la web y PlantHaven.</p>
+    </div>
+    <div class="barra-acciones">
+      <span id="estado-sesion" class="pastilla">Sin sesión</span>
+      <button id="btn-salir" class="btn-secundario" hidden>Cerrar sesión</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==================== LOGIN ==================== -->
+    <section id="vista-login" class="tarjeta">
+      <h2>Iniciar sesión</h2>
+      <p class="ayuda">
+        Usa tu cuenta de <strong>administrador</strong> de AdopPlant
+        (el mismo correo/teléfono y contraseña de la web o la app móvil).
+      </p>
+      <form id="form-login">
+        <label>
+          Correo o teléfono
+          <input id="identificador" name="identificador" type="text" required
+                 autocomplete="username" placeholder="admin@adopplant.org" />
+        </label>
+        <label>
+          Contraseña
+          <input id="contrasena" name="contrasena" type="password" required
+                 autocomplete="current-password" placeholder="••••••••" />
+        </label>
+        <p id="error-login" class="error" hidden></p>
+        <button type="submit" class="btn-primario">Entrar al panel</button>
+      </form>
+    </section>
+
+    <!-- ==================== PANEL ==================== -->
+    <section id="vista-panel" hidden>
+      <div class="controles">
+        <label>
+          Meses de evolución
+          <select id="meses">
+            <option value="6">6 meses</option>
+            <option value="12" selected>12 meses</option>
+            <option value="24">24 meses</option>
+          </select>
+        </label>
+        <button id="btn-actualizar" class="btn-primario">Actualizar</button>
+        <span id="estado-carga" class="ayuda"></span>
+      </div>
+
+      <p id="error-panel" class="error" hidden></p>
+
+      <h2>Resumen</h2>
+      <div id="kpis" class="kpis"></div>
+
+      <div class="rejilla">
+        <div class="tarjeta">
+          <h3>Evolución mensual</h3>
+          <canvas id="grafica-evolucion" height="220"></canvas>
+        </div>
+        <div class="tarjeta">
+          <h3>Plantas por categoría</h3>
+          <canvas id="grafica-categorias" height="220"></canvas>
+        </div>
+      </div>
+
+      <div class="rejilla">
+        <div class="tarjeta">
+          <h3>Embudo de conversión</h3>
+          <div id="embudo" class="embudo"></div>
+        </div>
+        <div class="tarjeta">
+          <h3>Usuarios destacados</h3>
+          <div class="dos-columnas">
+            <div>
+              <h4>Donan más</h4>
+              <ol id="top-donantes"></ol>
+            </div>
+            <div>
+              <h4>Adoptan más</h4>
+              <ol id="top-adoptantes"></ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Reportes</h3>
+        <div class="dos-columnas">
+          <div>
+            <h4>Por estado</h4>
+            <ul id="reportes-estado"></ul>
+          </div>
+          <div>
+            <h4>Más reportados</h4>
+            <ol id="reportes-usuarios"></ol>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <small>
+      AdopPlant Analytics · API auxiliar de solo lectura ·
+      <a href="/swagger">Swagger</a> · <a href="/health">Salud</a>
+    </small>
+  </footer>
+
+  <script src="/vendor/chart.umd.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

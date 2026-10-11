@@ -1,0 +1,150 @@
+:root {
+  --fondo: #f1f5f0;
+  --tarjeta: #ffffff;
+  --tinta: #1d2b23;
+  --muted: #5c6f63;
+  --verde: #2e7d4f;
+  --verde-oscuro: #1f5a38;
+  --borde: #dfe8dd;
+  --error: #b3261e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--fondo);
+  color: var(--tinta);
+}
+
+.barra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: var(--verde-oscuro);
+  color: #fff;
+  flex-wrap: wrap;
+}
+
+.barra h1 { margin: 0; font-size: 1.4rem; }
+.sub { margin: 0.25rem 0 0; opacity: 0.85; font-size: 0.9rem; }
+
+.barra-acciones { display: flex; align-items: center; gap: 0.75rem; }
+
+.pastilla {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+main { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+
+.tarjeta {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+h2 { margin-top: 1.5rem; }
+h3 { margin-top: 0; }
+h4 { margin-bottom: 0.4rem; color: var(--muted); }
+
+.ayuda { color: var(--muted); font-size: 0.9rem; }
+.error { color: var(--error); font-weight: 600; }
+
+form label { display: block; margin-bottom: 0.9rem; font-weight: 600; }
+
+input, select {
+  display: block;
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.6rem;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.btn-primario {
+  background: var(--verde);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn-primario:hover { background: var(--verde-oscuro); }
+
+.btn-secundario {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+}
+
+.controles {
+  display: flex;
+  align-items: end;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.controles label { min-width: 200px; }
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.kpi {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-left: 5px solid var(--verde);
+  border-radius: 10px;
+  padding: 0.75rem;
+}
+
+.kpi .valor { font-size: 1.6rem; font-weight: 700; }
+.kpi .etiqueta { color: var(--muted); font-size: 0.85rem; }
+
+.rejilla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 800px) {
+  .rejilla { grid-template-columns: 1fr; }
+}
+
+.dos-columnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .dos-columnas { grid-template-columns: 1fr; }
+}
+
+.embudo .paso {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed var(--borde);
+}
+
+footer { text-align: center; padding: 1.5rem; color: var(--muted); }
+footer a { color: var(--verde); }
