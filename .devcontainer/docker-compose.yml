@@ -1,0 +1,40 @@
+# "name" fija el nombre del proyecto de Docker Compose. Sin esto, Compose
+# usaria el nombre de la carpeta (.devcontainer) y los dos devcontainers del
+# workspace (este y el de Adoplant) chocarian con el mismo id.
+name: adopplant-analytics-dev
+
+services:
+  # Entorno de desarrollo de AdopPlant Analytics (.NET 8).
+  # Imagen oficial de Dev Containers: no hace falta una imagen propia.
+  app:
+    image: mcr.microsoft.com/devcontainers/dotnet:8.0-bookworm
+    working_dir: /workspaces/adopplant-analytics
+    user: root # solo para el arranque: deja los volumenes en manos de vscode
+    volumes:
+      - ..:/workspaces/adopplant-analytics:cached
+      # bin/ y obj/ van en volumenes con nombre (no en el bind mount).
+      # Docker Desktop declara TODO archivo de la carpeta de Windows como
+      # root:root, y MSBuild necesita fijar la fecha de modificacion de sus
+      # archivos .cache -> "error MSB3374: Access to the path ... is denied".
+      # Dentro de un volumen los archivos son de verdad de vscode y funciona.
+      - bin:/workspaces/adopplant-analytics/bin
+      - obj:/workspaces/adopplant-analytics/obj
+      - test-bin:/workspaces/adopplant-analytics/tests/AdopPlant.Analytics.Tests/bin
+      - test-obj:/workspaces/adopplant-analytics/tests/AdopPlant.Analytics.Tests/obj
+    command:
+      - bash
+      - -c
+      - |
+        for d in bin obj tests/AdopPlant.Analytics.Tests/bin tests/AdopPlant.Analytics.Tests/obj; do
+          mkdir -p "/workspaces/adopplant-analytics/$$d"
+          chown -R vscode:vscode "/workspaces/adopplant-analytics/$$d" || true
+        done
+        exec sleep infinity
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  bin:
+  obj:
+  test-bin:
+  test-obj:

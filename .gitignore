@@ -7,3 +7,4 @@ appsettings.Local.json
 appsettings.*.Local.json
 TestResults/
 coverage/
+CoverageReport/

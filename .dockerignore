@@ -1,0 +1,27 @@
+# Contexto de construcción: solo el código fuente del servicio.
+.git
+.gitignore
+.dockerignore
+Dockerfile
+
+# Artefactos de compilación y resultados de pruebas
+bin
+obj
+**/bin
+**/obj
+TestResults
+coverage
+CoverageReport
+*.trx
+*.coverage
+
+# Configuración local con secretos
+appsettings.Local.json
+appsettings.*.Local.json
+.env
+
+# Editor
+.vs
+.vscode
+.idea
+*.user

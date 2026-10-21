@@ -1,0 +1,36 @@
+{
+  "name": "AdopPlant Analytics (.NET 8)",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/adopplant-analytics",
+  "shutdownAction": "stopCompose",
+  "postCreateCommand": "sudo chown -R vscode:vscode bin obj tests/AdopPlant.Analytics.Tests/bin tests/AdopPlant.Analytics.Tests/obj && dotnet restore && dotnet tool restore",
+  "containerUser": "root",
+  "remoteUser": "vscode",
+  "remoteEnv": {
+    "ASPNETCORE_ENVIRONMENT": "Development",
+    "Jwt__Secret": "${localEnv:JWT_SECRET_KEY}",
+    "ConnectionStrings__AdopPlant": "Host=host.docker.internal;Port=55432;Database=plant;Username=postgres;Password=${localEnv:DB_PASSWORD}",
+    "FastApi__BaseUrl": "http://host.docker.internal:8000"
+  },
+  "forwardPorts": [5080, 7080],
+  "portsAttributes": {
+    "5080": {
+      "label": "AdopPlant Analytics (panel y Swagger)",
+      "onAutoForward": "notify"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.dotnet-watch",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "dotnet.server.useOmnisharp": false
+      }
+    }
+  },
+  "postAttachCommand": "echo 'API:      dotnet run --profile http   (http://localhost:5080)' && echo 'Pruebas:  dotnet test tests/AdopPlant.Analytics.Tests/AdopPlant.Analytics.Tests.csproj' && echo 'Base:     host.docker.internal:55432 (contenedor) | localhost:5432 (PostgreSQL de Windows)' && echo 'Secret:   export JWT_SECRET_KEY y DB_PASSWORD antes de abrir el contenedor'"
+}

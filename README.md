@@ -144,3 +144,40 @@ Invoke-RestMethod -Uri "http://localhost:5080/api/metricas/evolucion?meses=6" `
 - Build: `dotnet publish -c Release`
 - Start: `dotnet AdopPlant.Analytics.dll`
 - Variables de entorno en Render: `ConnectionStrings__AdopPlant` y `Jwt__Secret`.
+
+## Contenedores
+
+Este servicio **no** es Python: es ASP.NET Core 8, así que se apoya en las
+imágenes oficiales de .NET (`sdk:8.0` para compilar y `aspnet:8.0` para
+ejecutar). No hace falta ninguna imagen base propia.
+
+```powershell
+# Pila completa (PostgreSQL 18 + API FastAPI + esta API .NET)
+cd "C:\Users\sault\Documents\para mientras"
+docker compose up -d --build
+docker compose ps
+```
+
+```powershell
+# Solo esta API
+cd "C:\Users\sault\Documents\para mientras\AdopPlant.Analytics"
+docker build -t adopplant-analytics:local .
+
+# Pruebas unitarias dentro de un contenedor (no requieren base de datos)
+# --artifacts-path deja bin/ y obj/ DENTRO del contenedor: la carpeta de
+# Windows no se ensucia con archivos propiedad de root.
+docker run --rm -v "${PWD}:/src" -w /src mcr.microsoft.com/dotnet/sdk:8.0 `
+  dotnet test tests/AdopPlant.Analytics.Tests/AdopPlant.Analytics.Tests.csproj `
+  -p:RollForward=Major --artifacts-path /tmp/artifacts
+```
+
+Además hay un **devcontainer** en `.devcontainer/` (VS Code → "Dev Containers:
+Reopen in Container") con el SDK de .NET 8, para trabajar sin instalar nada en
+la máquina. Detalle de toda la pila en `..\CONTENEDORES.md`.
+
+> `bin/` y `obj/` del devcontainer viven en **volúmenes con nombre**, no en la
+> carpeta de Windows. Docker Desktop declara todo archivo del bind mount como
+> `root:root` y MSBuild no puede fijar la fecha de modificación de un archivo
+> que no es suyo: `error MSB3374 ... Access to the path ... is denied`.
+> Con los volúmenes, la compilación y las pruebas funcionan como `vscode`.
+
