@@ -1,0 +1,22 @@
+# Stack local de AdopPlant Analytics (atajo desde la carpeta del repositorio).
+#
+#   docker compose up -d --build     levanta PostgreSQL 18 + la API FastAPI
+#                                    + esta API .NET de analitica
+#   docker compose ps                 estado y salud de los servicios
+#   docker compose logs -f analytics  sigue la ejecucion de la API .NET
+#   docker compose down               detiene todo (conserva los datos)
+#   docker compose down -v            detiene todo y borra la base de datos
+#
+# La definicion de los servicios vive en el compose de la raiz del workspace
+# (../docker-compose.yml) porque las dos APIs comparten la misma base de datos
+# y el mismo secreto JWT. Este archivo solo la incluye, para poder trabajar
+# desde esta carpeta sin duplicar la configuracion ni chocar de puertos.
+#
+# Analytics delega el login en la API FastAPI
+# (POST /api/sesion -> POST /api/auth/login), por eso la pila la arranca
+# despues de que la API Python este saludable.
+name: adopplant
+
+include:
+  - path: ../docker-compose.yml
+    project_directory: ..

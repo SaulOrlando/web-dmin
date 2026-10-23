@@ -9,8 +9,11 @@
   "remoteUser": "vscode",
   "remoteEnv": {
     "ASPNETCORE_ENVIRONMENT": "Development",
-    "Jwt__Secret": "${localEnv:JWT_SECRET_KEY}",
-    "ConnectionStrings__AdopPlant": "Host=host.docker.internal;Port=55432;Database=plant;Username=postgres;Password=${localEnv:DB_PASSWORD}",
+    // Los valores por defecto coinciden con el .env local documentado en el
+    // README; se pueden sobrescribir exportando JWT_SECRET_KEY y DB_PASSWORD
+    // antes de abrir el contenedor.
+    "Jwt__Secret": "${localEnv:JWT_SECRET_KEY:4bb202228f04eada6a4f6e5a09393036dcefe9f4e8175b12dc0a3f9b5dcfc218}",
+    "ConnectionStrings__AdopPlant": "Host=host.docker.internal;Port=55432;Database=plant;Username=postgres;Password=${localEnv:DB_PASSWORD:javarberl}",
     "FastApi__BaseUrl": "http://host.docker.internal:8000"
   },
   "forwardPorts": [5080, 7080],
@@ -32,5 +35,5 @@
       }
     }
   },
-  "postAttachCommand": "echo 'API:      dotnet run --profile http   (http://localhost:5080)' && echo 'Pruebas:  dotnet test tests/AdopPlant.Analytics.Tests/AdopPlant.Analytics.Tests.csproj' && echo 'Base:     host.docker.internal:55432 (contenedor) | localhost:5432 (PostgreSQL de Windows)' && echo 'Secret:   export JWT_SECRET_KEY y DB_PASSWORD antes de abrir el contenedor'"
+  "postAttachCommand": "echo 'API:      dotnet run --profile http   (http://localhost:5080)' && echo 'Pruebas:  dotnet test tests/AdopPlant.Analytics.Tests/AdopPlant.Analytics.Tests.csproj' && echo 'Base:     host.docker.internal:55432 (contenedor) | localhost:5432 (PostgreSQL de Windows)' && echo 'JWT y DB: valores por defecto del .env; exporta JWT_SECRET_KEY y DB_PASSWORD para cambiarlos'"
 }

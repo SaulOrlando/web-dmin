@@ -118,11 +118,37 @@ No requieren cambios: comparten base de datos y el token de sesión. Si quieres
 que el móvil solo consuma la .NET, agrega su URL a `Cors:Origenes` y a la
 configuración del cliente.
 
+## Cuentas y datos de prueba
+
+La API .NET **no crea datos**: lee la base de AdopPlant. Para que el panel y las
+métricas tengan contenido, ejecutar el sembrado del repositorio Python (crea las
+cuentas y las plantas de ejemplo):
+
+| Rol | Usuario | Contraseña |
+|---|---|---|
+| Administrador | `admin.panel@adopplant.com` | `Admin2026panel` |
+| Donante | `donante.pruebas@adopplant.com` | `Donante2026!` |
+| Adoptante | `adoptante.pruebas@adopplant.com` | `Adoptante2026!` |
+
+```powershell
+# Con la pila de contenedores (desde la raíz del workspace)
+docker compose run --rm seed
+
+# Contra la base local de Windows
+cd "C:\Users\sault\Documents\para mientras\Adoplant"
+.\.venv\Scripts\python.exe -m scripts.seed_pruebas
+```
+
+> Las cuentas son **solo para desarrollo y QA**.
+
 ## Pruebas rápidas
 
 ```powershell
-# 1) Token de administrador (desde el login de la API FastAPI)
-$token = "<JWT_DEL_ADMIN>"
+# 1) Login delegado: pide el token a FastAPI
+$cuerpo = '{"identificador":"admin.panel@adopplant.com","contrasena":"Admin2026panel"}'
+$sesion = Invoke-RestMethod -Uri http://localhost:5080/api/sesion -Method Post `
+  -ContentType "application/json" -Body $cuerpo
+$token = $sesion.accessToken
 
 # 2) Resumen
 Invoke-RestMethod -Uri http://localhost:5080/api/metricas/resumen `
@@ -156,6 +182,13 @@ ejecutar). No hace falta ninguna imagen base propia.
 cd "C:\Users\sault\Documents\para mientras"
 docker compose up -d --build
 docker compose ps
+docker compose run --rm seed        # datos y cuentas de prueba
+```
+
+```powershell
+# Desde esta carpeta (el compose.yaml incluye el de la raíz)
+cd "C:\Users\sault\Documents\para mientras\AdopPlant.Analytics"
+docker compose up -d --build
 ```
 
 ```powershell
@@ -171,13 +204,42 @@ docker run --rm -v "${PWD}:/src" -w /src mcr.microsoft.com/dotnet/sdk:8.0 `
   -p:RollForward=Major --artifacts-path /tmp/artifacts
 ```
 
+| Recurso | URL |
+|---|---|
+| Panel de administración | <http://localhost:5080/> |
+| Swagger | <http://localhost:5080/swagger> |
+| Health | <http://localhost:5080/health> |
+| OpenAPI | <http://localhost:5080/swagger/v1/swagger.json> |
+
 Además hay un **devcontainer** en `.devcontainer/` (VS Code → "Dev Containers:
 Reopen in Container") con el SDK de .NET 8, para trabajar sin instalar nada en
-la máquina. Detalle de toda la pila en `..\CONTENEDORES.md`.
+la máquina. Trae valores por defecto para `Jwt__Secret` y la conexión (los del
+`.env` local); si se cambian las credenciales, exportar `JWT_SECRET_KEY` y
+`DB_PASSWORD` antes de abrirlo. Detalle de toda la pila en `..\CONTENEDORES.md`.
 
 > `bin/` y `obj/` del devcontainer viven en **volúmenes con nombre**, no en la
 > carpeta de Windows. Docker Desktop declara todo archivo del bind mount como
 > `root:root` y MSBuild no puede fijar la fecha de modificación de un archivo
 > que no es suyo: `error MSB3374 ... Access to the path ... is denied`.
 > Con los volúmenes, la compilación y las pruebas funcionan como `vscode`.
+
+## Pruebas automatizadas
+
+| Suite | Herramienta | Ticket |
+|---|---|---|
+| Rendimiento (50 VU/2 min sobre `/api/metricas/*`) | k6 | **SCRUM-96** |
+| Integración (login delegado + siete endpoints) | Newman | **SCRUM-86** |
+| Seguridad de la API | OWASP ZAP | **SCRUM-120** |
+
+```powershell
+# Desde la raíz del workspace
+docker compose -f docker-compose.yml -f compose.k6-analytics.yaml run --rm k6-analytics
+docker compose -f docker-compose.yml -f compose.newman.yaml       run --rm newman
+docker compose -f docker-compose.yml -f compose.zap.yaml          run --rm zap-analytics
+```
+
+- Guion k6: `tests/perf/k6-analytics-load.js`.
+- Colección Newman: `postman/AdopPlant_Analytics.postman_collection.json`.
+- Reportes: `..\tests\reports\{k6,newman,zap}`.
+- Comandos, criterios y solución de problemas: **`..\tests\README.md`**.
 

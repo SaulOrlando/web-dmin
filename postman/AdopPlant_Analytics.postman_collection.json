@@ -1,0 +1,441 @@
+{
+  "info": {
+    "name": "AdopPlant Analytics - Integracion y seguridad",
+    "description": "Coleccion Newman para la API C# (.NET 8) de AdopPlant Analytics.\n\nCubre SCRUM-86 (integracion con la base compartida y login delegado en FastAPI) y los casos de seguridad C-SEC-01..C-SEC-04 del ticket SCRUM-120 sobre los endpoints /api/metricas/*.\n\nRequiere Adoplant (FastAPI) en ejecucion y los datos de Adoplant/scripts/seed_pruebas.py.\n\nEjecucion local:\n  newman run postman/AdopPlant_Analytics.postman_collection.json \\\n    --env-var baseUrl=http://127.0.0.1:5080 \\\n    --env-var adminUser=admin.panel@adopplant.com \\\n    --env-var adminPassword=Admin2026panel \\\n    --env-var donorUser=donante.pruebas@adopplant.com \\\n    --env-var donorPassword=Donante2026!\n\nEjecucion con Docker (desde la raiz del workspace):\n  docker compose -f docker-compose.yml -f compose.newman.yaml run --rm newman",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://analytics:8080" },
+    { "key": "adminUser", "value": "admin.panel@adopplant.com" },
+    { "key": "adminPassword", "value": "Admin2026panel" },
+    { "key": "donorUser", "value": "donante.pruebas@adopplant.com" },
+    { "key": "donorPassword", "value": "Donante2026!" },
+    { "key": "token", "value": "" },
+    { "key": "tokenNoAdmin", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "01 - Salud, contrato y login delegado",
+      "item": [
+        {
+          "name": "01.01 - GET /health",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('la base de datos esta conectada', function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.estado).to.eql('ok');",
+                  "  pm.expect(body.baseDatos).to.eql('conectada');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/health"
+          }
+        },
+        {
+          "name": "01.02 - GET /api (informacion)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('se identifica como Analytics', function () {",
+                  "  pm.expect(pm.response.json().servicio).to.contain('Analytics');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api"
+          }
+        },
+        {
+          "name": "01.03 - GET /swagger/v1/swagger.json (contrato)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('publica los endpoints de metricas', function () {",
+                  "  const paths = pm.response.json().paths || {};",
+                  "  pm.expect(paths).to.have.property('/api/metricas/resumen');",
+                  "  pm.expect(paths).to.have.property('/api/metricas/plantas-por-categoria');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/swagger/v1/swagger.json"
+          }
+        },
+        {
+          "name": "01.04 - POST /api/sesion (login delegado, administrador)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('FastAPI emitio un JWT valido', function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.accessToken).to.be.a('string');",
+                  "  pm.expect(body.accessToken.split('.')).to.have.lengthOf(3);",
+                  "  pm.collectionVariables.set('token', body.accessToken);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identificador\": \"{{adminUser}}\",\n  \"contrasena\": \"{{adminPassword}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/api/sesion"
+          }
+        },
+        {
+          "name": "01.05 - POST /api/sesion (login delegado, donante)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('guarda el token sin permisos de administrador', function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.accessToken).to.be.a('string');",
+                  "  pm.collectionVariables.set('tokenNoAdmin', body.accessToken);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identificador\": \"{{donorUser}}\",\n  \"contrasena\": \"{{donorPassword}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/api/sesion"
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Metricas con token de administrador (SCRUM-86)",
+      "item": [
+        {
+          "name": "02.01 - GET /api/metricas/resumen",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('trae los seis bloques de KPIs', function () {",
+                  "  const body = pm.response.json();",
+                  "  ['usuarios', 'plantas', 'solicitudes', 'adopciones', 'reportes', 'categorias'].forEach(function (clave) {",
+                  "    pm.expect(body).to.have.property(clave);",
+                  "    pm.expect(body[clave]).to.be.an('object');",
+                  "  });",
+                  "});",
+                  "pm.test('los totales son numeros no negativos', function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.plantas.total).to.be.at.least(0);",
+                  "  pm.expect(body.usuarios.total).to.be.at.least(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/metricas/resumen"
+          }
+        },
+        {
+          "name": "02.02 - GET /api/metricas/evolucion",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('devuelve una serie mensual', function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.be.an('array');",
+                  "  if (body.length > 0) {",
+                  "    pm.expect(body[0]).to.have.property('periodo');",
+                  "    pm.expect(body[0]).to.have.property('publicaciones');",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/metricas/evolucion?meses=6"
+          }
+        },
+        {
+          "name": "02.03 - GET /api/metricas/plantas-por-categoria",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('devuelve el ranking por categoria', function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.be.an('array');",
+                  "  if (body.length > 0) {",
+                  "    pm.expect(body[0]).to.have.property('categoria');",
+                  "    pm.expect(body[0]).to.have.property('porcentajeAdopcion');",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/metricas/plantas-por-categoria"
+          }
+        },
+        {
+          "name": "02.04 - GET /api/metricas/embudo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('devuelve el embudo y la conversion', function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.have.property('publicadas');",
+                  "  pm.expect(body).to.have.property('tasaConversion');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/metricas/embudo"
+          }
+        },
+        {
+          "name": "02.05 - GET /api/metricas/usuarios",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('devuelve el ranking de usuarios', function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.have.property('topDonantes');",
+                  "  pm.expect(body).to.have.property('topAdoptantes');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/metricas/usuarios?limite=5"
+          }
+        },
+        {
+          "name": "02.06 - GET /api/metricas/reportes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('devuelve el resumen de reportes', function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.have.property('porEstado');",
+                  "  pm.expect(body).to.have.property('masReportados');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/metricas/reportes?limite=5"
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Seguridad de metricas (SCRUM-120)",
+      "item": [
+        {
+          "name": "C-SEC-01 - Sin token en /api/metricas/resumen",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('rechaza con 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "pm.test('no devuelve datos de negocio', function () {",
+                  "  pm.expect(pm.response.text()).to.not.contain('usuarios');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/metricas/resumen"
+          }
+        },
+        {
+          "name": "C-SEC-02 - Token con firma invalida",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('rechaza con 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiaWF0IjoxLCJleHAiOjJ9.firma-invalida"
+              }
+            ],
+            "url": "{{baseUrl}}/api/metricas/resumen"
+          }
+        },
+        {
+          "name": "C-SEC-04 - Usuario no administrador en /api/metricas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('rechaza con 403', function () {",
+                  "  pm.response.to.have.status(403);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenNoAdmin}}" }],
+            "url": "{{baseUrl}}/api/metricas/resumen"
+          }
+        },
+        {
+          "name": "C-SEC-05 - Fuerza bruta en /api/sesion",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('rechaza con 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "pm.test('no devuelve un token', function () {",
+                  "  pm.expect(pm.response.text()).to.not.contain('accessToken');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identificador\": \"{{adminUser}}\",\n  \"contrasena\": \"ClaveIncorrecta1!\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/api/sesion"
+          }
+        }
+      ]
+    }
+  ]
+}
