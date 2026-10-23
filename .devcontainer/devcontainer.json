@@ -3,6 +3,13 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspaces/adopplant-analytics",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true,
+      "enableNonRootDocker": true
+    }
+  },
   "shutdownAction": "stopCompose",
   "postCreateCommand": "sudo chown -R vscode:vscode bin obj tests/AdopPlant.Analytics.Tests/bin tests/AdopPlant.Analytics.Tests/obj && dotnet restore && dotnet tool restore",
   "containerUser": "root",
