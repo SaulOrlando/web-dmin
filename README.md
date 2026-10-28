@@ -4,55 +4,43 @@ API auxiliar de métricas administrativas para el proyecto AdopPlant. Proyecto .
 
 ## Requisitos
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) instalado, o
-- [Docker](https://www.docker.com/) para ejecutar sin instalar SDK
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 
-## Ejecutar tests (SIN levantar Adopplant)
+## Ejecutar tests
 
 Los tests unitarios **no dependen** de la API FastAPI ni de PostgreSQL. Se pueden ejecutar desde esta carpeta.
 
-### Opción 1: Con .NET SDK local (recomendado)
-
-`ash
+```bash
 # Desde la carpeta AdopPlant.Analytics/
-dotnet test tests/AdopPlant.Analytics.Tests/AdopPlant.Analytics.Tests.csproj --no-restore --configuration Debug
-`
+dotnet test tests/AdopPlant.Analytics.Tests/AdopPlant.Analytics.Tests.csproj --configuration Debug
+```
 
 Si prefieres restaurar paquetes explícitamente:
 
-`ash
+```bash
 dotnet restore AdopPlant.Analytics.csproj
 dotnet restore tests/AdopPlant.Analytics.Tests/AdopPlant.Analytics.Tests.csproj
 dotnet test tests/AdopPlant.Analytics.Tests/AdopPlant.Analytics.Tests.csproj --configuration Debug
-`
+```
 
-### Opción 2: Con Docker (100% portable - Windows/Linux/macOS/GitHub Codespaces)
+### Ejecutar con más detalle
 
-Desde **esta misma carpeta** (AdopPlant.Analytics/):
+```bash
+# Ver resultados detallados
+dotnet test tests/AdopPlant.Analytics.Tests/AdopPlant.Analytics.Tests.csproj --logger "console;verbosity=detailed"
+```
 
-#### Linux/macOS/Codespaces (bash/zsh)
+**Total de tests:** 15 tests.
 
-`ash
-docker run --rm \
-  -v "C:\Users\sault\Documents\para mientras":/app \
-  -w /app \
-  mcr.microsoft.com/dotnet/sdk:8.0 \
-  dotnet test tests/AdopPlant.Analytics.Tests/AdopPlant.Analytics.Tests.csproj --no-restore --configuration Debug
-`
+## Ver reportes
 
-#### Windows (PowerShell)
+Cada ejecución genera:
 
-`powershell
-docker run --rm -v "C:\Users\sault\Documents\para mientras:/app" -w /app mcr.microsoft.com/dotnet/sdk:8.0 dotnet test tests/AdopPlant.Analytics.Tests/AdopPlant.Analytics.Tests.csproj --no-restore --configuration Debug
-`
+- Resultados TRX en `TestResults/<fecha>/`
+- Cobertura XML en `TestResults/<fecha>/coverage.cobertura.xml`
+- Informe legible HTML en `coverage/index.html` (ReportGenerator)
 
-#### Windows (CMD)
-
-`cmd
-docker run --rm -v "%CD%:/app" -w /app mcr.microsoft.com/dotnet/sdk:8.0 dotnet test tests/AdopPlant.Analytics.Tests/AdopPlant.Analytics.Tests.csproj --no-restore --configuration Debug
-`
-
-Si el repo se clona en otra ruta (o se abre como carpeta única en Codespaces), **no se usa ninguna ruta absoluta** - todo se hace con $PWD/%CD%.
+Abrir `coverage/index.html` en el navegador para ver el reporte de cobertura detallado.
 
 ## Ejecutar la API localmente (opcional)
 
@@ -65,12 +53,6 @@ Si necesitas levantar la API para pruebas manuales:
    - FastApi__BaseUrl (por defecto http://127.0.0.1:8000)
 3. Ejecutar:
 
-`ash
+```bash
 dotnet run --project AdopPlant.Analytics.csproj --profile http
-`
-
-O con Docker desde la raíz del workspace completo usando ../docker-compose.yml. Ver ../INICIAR_PROYECTOS.md para detalles.
-
-## DevContainer
-
-Existe ./.devcontainer/ con configuración para .NET 8. Abre **esta carpeta** en VS Code con la extensión Dev Containers o úsalo en GitHub Codespaces.
+```
