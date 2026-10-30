@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>SCRUM-91 - Checklist UAT Analytics</title>
+  <style>
+    body { font-family: Segoe UI, Arial, sans-serif; margin: 24px; color: #1f2933; }
+    table { border-collapse: collapse; width: 100%; font-size: 13px; }
+    th, td { border: 1px solid #cbd2d9; padding: 6px 8px; text-align: left; vertical-align: top; }
+    th { background: #e4e7eb; }
+    .ok { color: #0b6b3a; font-weight: 600; }
+    .mal { color: #a61b1b; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <h1>SCRUM-91 - Checklist UAT del modulo de Analytics</h1>
+  <p>Fecha: 2026-10-30T12:17:43 - Entorno: http://localhost:5080 - Base: localhost:5432/plant</p>
+  <p>Resultado: <strong class="ok">ACEPTADO</strong>
+     (8 de 8 criterios aceptados). Firma del PO: pendiente.</p>
+  <table>
+    <thead><tr><th>ID</th><th>Criterio</th><th>Resultado</th><th>Comprobaciones</th></tr></thead>
+    <tbody>
+    <tr><td>UAT-01</td><td>El panel carga y rechaza credenciales invalidas</td><td class="ok">ACEPTADO</td><td>El panel responde 200: esperado=200 obtenido=200 [PASS]<br>El panel sirve el HTML del panel: esperado=si obtenido=si [PASS]<br>Login con contrasena incorrecta devuelve 401: esperado=401 obtenido=401 [PASS]</td></tr>
+    <tr><td>UAT-02</td><td>El resumen general coincide con la base de datos</td><td class="ok">ACEPTADO</td><td>Usuarios total: esperado=21 obtenido=21 [PASS]<br>Usuarios activos: esperado=20 obtenido=20 [PASS]<br>Usuarios bloqueados: esperado=1 obtenido=1 [PASS]<br>Usuarios nuevos 30 dias: esperado=18 obtenido=18 [PASS]<br>Plantas total: esperado=11 obtenido=11 [PASS]<br>Plantas disponibles: esperado=5 obtenido=5 [PASS]<br>Plantas solicitadas: esperado=5 obtenido=5 [PASS]<br>Plantas adoptadas: esperado=1 obtenido=1 [PASS]<br>Plantas ocultas: esperado=0 obtenido=0 [PASS]<br>Plantas eliminadas: esperado=0 obtenido=0 [PASS]<br>Solicitudes total: esperado=8 obtenido=8 [PASS]<br>Solicitudes pendientes: esperado=2 obtenido=2 [PASS]<br>Solicitudes aceptadas: esperado=6 obtenido=6 [PASS]<br>Solicitudes rechazadas: esperado=0 obtenido=0 [PASS]<br>Adopciones total: esperado=6 obtenido=6 [PASS]<br>Adopciones en proceso: esperado=5 obtenido=5 [PASS]<br>Adopciones completadas: esperado=1 obtenido=1 [PASS]<br>Reportes total: esperado=0 obtenido=0 [PASS]<br>Reportes en revision: esperado=0 obtenido=0 [PASS]<br>Reportes resueltos: esperado=0 obtenido=0 [PASS]<br>Categorias total: esperado=5 obtenido=5 [PASS]<br>Categorias activas: esperado=5 obtenido=5 [PASS]</td></tr>
+    <tr><td>UAT-03</td><td>La evolucion mensual trae 12 meses y el mes actual coincide</td><td class="ok">ACEPTADO</td><td>Puntos devueltos: esperado=12 obtenido=12 [PASS]<br>Existe el periodo actual: esperado=si obtenido=si [PASS]<br>Publicaciones del mes actual: esperado=11 obtenido=11 [PASS]<br>Solicitudes del mes actual: esperado=8 obtenido=8 [PASS]</td></tr>
+    <tr><td>UAT-04</td><td>Plantas por categoria y porcentaje de adopcion correctos</td><td class="ok">ACEPTADO</td><td>Categorias devueltas: esperado=5 obtenido=5 [PASS]<br>Categoria Exterior publicadas: esperado=8 obtenido=8 [PASS]<br>Categoria Exterior adoptadas: esperado=1 obtenido=1 [PASS]<br>Categoria Exterior porcentaje: esperado=12.5 obtenido=12.5 [PASS]<br>Categoria Interior publicadas: esperado=2 obtenido=2 [PASS]<br>Categoria Interior adoptadas: esperado=0 obtenido=0 [PASS]<br>Categoria Interior porcentaje: esperado=0 obtenido=0 [PASS]<br>Categoria Suculentas publicadas: esperado=1 obtenido=1 [PASS]<br>Categoria Suculentas adoptadas: esperado=0 obtenido=0 [PASS]<br>Categoria Suculentas porcentaje: esperado=0 obtenido=0 [PASS]<br>Categoria Ornamentales publicadas: esperado=0 obtenido=0 [PASS]<br>Categoria Ornamentales adoptadas: esperado=0 obtenido=0 [PASS]<br>Categoria Ornamentales porcentaje: esperado=0 obtenido=0 [PASS]<br>Categoria Suculenta publicadas: esperado=0 obtenido=0 [PASS]<br>Categoria Suculenta adoptadas: esperado=0 obtenido=0 [PASS]<br>Categoria Suculenta porcentaje: esperado=0 obtenido=0 [PASS]</td></tr>
+    <tr><td>UAT-05</td><td>El embudo de conversion coincide con la base</td><td class="ok">ACEPTADO</td><td>Publicadas: esperado=11 obtenido=11 [PASS]<br>Con solicitud: esperado=7 obtenido=7 [PASS]<br>Adoptadas: esperado=1 obtenido=1 [PASS]<br>Tasa de conversion: esperado=9.09 obtenido=9.09 [PASS]</td></tr>
+    <tr><td>UAT-06</td><td>Los usuarios destacados respetan el limite y la base</td><td class="ok">ACEPTADO</td><td>Top donantes devueltos: esperado=1 obtenido=1 [PASS]<br>Top adoptantes devueltos: esperado=1 obtenido=1 [PASS]</td></tr>
+    <tr><td>UAT-07</td><td>Los reportes por estado y mas reportados coinciden</td><td class="ok">ACEPTADO</td><td>Estados devueltos: esperado=0 obtenido=0 [PASS]<br>Totales por estado correctos: esperado=si obtenido=si [PASS]<br>Usuarios mas reportados: esperado=0 obtenido=0 [PASS]</td></tr>
+    <tr><td>UAT-08</td><td>Los seis reportes responden 200 a un administrador</td><td class="ok">ACEPTADO</td><td>GET /api/metricas/resumen: esperado=200 obtenido=200 [PASS]<br>GET /api/metricas/evolucion: esperado=200 obtenido=200 [PASS]<br>GET /api/metricas/plantas-por-categoria: esperado=200 obtenido=200 [PASS]<br>GET /api/metricas/embudo: esperado=200 obtenido=200 [PASS]<br>GET /api/metricas/usuarios: esperado=200 obtenido=200 [PASS]<br>GET /api/metricas/reportes: esperado=200 obtenido=200 [PASS]</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>

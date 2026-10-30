@@ -1,0 +1,438 @@
+﻿{
+    "ticket":  "SCRUM-91",
+    "tipo":  "TestSession (UAT)",
+    "fecha":  "2026-10-30T12:17:43",
+    "entorno":  "http://localhost:5080",
+    "baseDatos":  "localhost:5432/plant",
+    "usuario":  "admin.panel@adopplant.com",
+    "criterios":  8,
+    "aceptados":  8,
+    "veredicto":  "ACEPTADO",
+    "firmaPO":  "Pendiente de firma del Product Owner",
+    "resultados":  [
+                       {
+                           "id":  "UAT-01",
+                           "criterio":  "El panel carga y rechaza credenciales invalidas",
+                           "resultado":  "ACEPTADO",
+                           "fallos":  0,
+                           "detalle":  [
+                                           {
+                                               "comprobacion":  "El panel responde 200",
+                                               "esperado":  200,
+                                               "obtenido":  200,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "El panel sirve el HTML del panel",
+                                               "esperado":  "si",
+                                               "obtenido":  "si",
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Login con contrasena incorrecta devuelve 401",
+                                               "esperado":  401,
+                                               "obtenido":  401,
+                                               "resultado":  "PASS"
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "UAT-02",
+                           "criterio":  "El resumen general coincide con la base de datos",
+                           "resultado":  "ACEPTADO",
+                           "fallos":  0,
+                           "detalle":  [
+                                           {
+                                               "comprobacion":  "Usuarios total",
+                                               "esperado":  21,
+                                               "obtenido":  21,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Usuarios activos",
+                                               "esperado":  20,
+                                               "obtenido":  20,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Usuarios bloqueados",
+                                               "esperado":  1,
+                                               "obtenido":  1,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Usuarios nuevos 30 dias",
+                                               "esperado":  18,
+                                               "obtenido":  18,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Plantas total",
+                                               "esperado":  11,
+                                               "obtenido":  11,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Plantas disponibles",
+                                               "esperado":  5,
+                                               "obtenido":  5,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Plantas solicitadas",
+                                               "esperado":  5,
+                                               "obtenido":  5,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Plantas adoptadas",
+                                               "esperado":  1,
+                                               "obtenido":  1,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Plantas ocultas",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Plantas eliminadas",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Solicitudes total",
+                                               "esperado":  8,
+                                               "obtenido":  8,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Solicitudes pendientes",
+                                               "esperado":  2,
+                                               "obtenido":  2,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Solicitudes aceptadas",
+                                               "esperado":  6,
+                                               "obtenido":  6,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Solicitudes rechazadas",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Adopciones total",
+                                               "esperado":  6,
+                                               "obtenido":  6,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Adopciones en proceso",
+                                               "esperado":  5,
+                                               "obtenido":  5,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Adopciones completadas",
+                                               "esperado":  1,
+                                               "obtenido":  1,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Reportes total",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Reportes en revision",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Reportes resueltos",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categorias total",
+                                               "esperado":  5,
+                                               "obtenido":  5,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categorias activas",
+                                               "esperado":  5,
+                                               "obtenido":  5,
+                                               "resultado":  "PASS"
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "UAT-03",
+                           "criterio":  "La evolucion mensual trae 12 meses y el mes actual coincide",
+                           "resultado":  "ACEPTADO",
+                           "fallos":  0,
+                           "detalle":  [
+                                           {
+                                               "comprobacion":  "Puntos devueltos",
+                                               "esperado":  12,
+                                               "obtenido":  12,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Existe el periodo actual",
+                                               "esperado":  "si",
+                                               "obtenido":  "si",
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Publicaciones del mes actual",
+                                               "esperado":  11,
+                                               "obtenido":  11,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Solicitudes del mes actual",
+                                               "esperado":  8,
+                                               "obtenido":  8,
+                                               "resultado":  "PASS"
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "UAT-04",
+                           "criterio":  "Plantas por categoria y porcentaje de adopcion correctos",
+                           "resultado":  "ACEPTADO",
+                           "fallos":  0,
+                           "detalle":  [
+                                           {
+                                               "comprobacion":  "Categorias devueltas",
+                                               "esperado":  5,
+                                               "obtenido":  5,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Exterior publicadas",
+                                               "esperado":  8,
+                                               "obtenido":  8,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Exterior adoptadas",
+                                               "esperado":  1,
+                                               "obtenido":  1,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Exterior porcentaje",
+                                               "esperado":  12.5,
+                                               "obtenido":  12.5,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Interior publicadas",
+                                               "esperado":  2,
+                                               "obtenido":  2,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Interior adoptadas",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Interior porcentaje",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Suculentas publicadas",
+                                               "esperado":  1,
+                                               "obtenido":  1,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Suculentas adoptadas",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Suculentas porcentaje",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Ornamentales publicadas",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Ornamentales adoptadas",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Ornamentales porcentaje",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Suculenta publicadas",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Suculenta adoptadas",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Categoria Suculenta porcentaje",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "UAT-05",
+                           "criterio":  "El embudo de conversion coincide con la base",
+                           "resultado":  "ACEPTADO",
+                           "fallos":  0,
+                           "detalle":  [
+                                           {
+                                               "comprobacion":  "Publicadas",
+                                               "esperado":  11,
+                                               "obtenido":  11,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Con solicitud",
+                                               "esperado":  7,
+                                               "obtenido":  7,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Adoptadas",
+                                               "esperado":  1,
+                                               "obtenido":  1,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Tasa de conversion",
+                                               "esperado":  9.09,
+                                               "obtenido":  9.09,
+                                               "resultado":  "PASS"
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "UAT-06",
+                           "criterio":  "Los usuarios destacados respetan el limite y la base",
+                           "resultado":  "ACEPTADO",
+                           "fallos":  0,
+                           "detalle":  [
+                                           {
+                                               "comprobacion":  "Top donantes devueltos",
+                                               "esperado":  1,
+                                               "obtenido":  1,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Top adoptantes devueltos",
+                                               "esperado":  1,
+                                               "obtenido":  1,
+                                               "resultado":  "PASS"
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "UAT-07",
+                           "criterio":  "Los reportes por estado y mas reportados coinciden",
+                           "resultado":  "ACEPTADO",
+                           "fallos":  0,
+                           "detalle":  [
+                                           {
+                                               "comprobacion":  "Estados devueltos",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Totales por estado correctos",
+                                               "esperado":  "si",
+                                               "obtenido":  "si",
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "Usuarios mas reportados",
+                                               "esperado":  0,
+                                               "obtenido":  0,
+                                               "resultado":  "PASS"
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "UAT-08",
+                           "criterio":  "Los seis reportes responden 200 a un administrador",
+                           "resultado":  "ACEPTADO",
+                           "fallos":  0,
+                           "detalle":  [
+                                           {
+                                               "comprobacion":  "GET /api/metricas/resumen",
+                                               "esperado":  200,
+                                               "obtenido":  200,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "GET /api/metricas/evolucion",
+                                               "esperado":  200,
+                                               "obtenido":  200,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "GET /api/metricas/plantas-por-categoria",
+                                               "esperado":  200,
+                                               "obtenido":  200,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "GET /api/metricas/embudo",
+                                               "esperado":  200,
+                                               "obtenido":  200,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "GET /api/metricas/usuarios",
+                                               "esperado":  200,
+                                               "obtenido":  200,
+                                               "resultado":  "PASS"
+                                           },
+                                           {
+                                               "comprobacion":  "GET /api/metricas/reportes",
+                                               "esperado":  200,
+                                               "obtenido":  200,
+                                               "resultado":  "PASS"
+                                           }
+                                       ]
+                       }
+                   ]
+}

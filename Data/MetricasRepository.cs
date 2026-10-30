@@ -7,7 +7,7 @@ namespace AdopPlant.Analytics.Data;
 /// Consultas de solo lectura para el panel de métricas del administrador.
 /// Todas las consultas respetan el esquema real de AdopPlant (PostgreSQL 18).
 /// </summary>
-public sealed class MetricasRepository
+public sealed class MetricasRepository : IMetricasRepository
 {
     private const string SqlResumen = """
         SELECT

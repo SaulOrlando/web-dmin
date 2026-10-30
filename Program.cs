@@ -23,7 +23,7 @@ jwtSettings.Validar();
 // ---------------------------------------------------------------------------
 builder.Services.AddSingleton(jwtSettings);
 builder.Services.AddSingleton<DatabaseConnectionFactory>();
-builder.Services.AddScoped<MetricasRepository>();
+builder.Services.AddScoped<IMetricasRepository, MetricasRepository>();
 builder.Services.AddScoped<AdminCheckService>();
 
 // HttpClient para delegar el login a la API FastAPI
@@ -174,3 +174,10 @@ app.MapMetricasEndpoints();
 app.MapSesionEndpoints();
 
 app.Run();
+
+/// <summary>
+/// Punto de entrada expuesto para que las pruebas de endpoints (SCRUM-107)
+/// puedan montar la API en memoria con <c>WebApplicationFactory&lt;Program&gt;</c>.
+/// </summary>
+public partial class Program { }
+

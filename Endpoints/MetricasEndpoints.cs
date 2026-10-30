@@ -11,13 +11,13 @@ public static class MetricasEndpoints
             .RequireAuthorization(Politicas.EsAdministrador)
             .WithTags("Métricas");
 
-        grupo.MapGet("/resumen", async (MetricasRepository repo, CancellationToken ct) =>
+        grupo.MapGet("/resumen", async (IMetricasRepository repo, CancellationToken ct) =>
                 Results.Ok(await repo.ObtenerResumenAsync(ct)))
             .WithName("ResumenGeneral")
             .WithSummary("Indicadores principales: usuarios, plantas, solicitudes, adopciones y reportes.");
 
         grupo.MapGet("/evolucion", async (
-                MetricasRepository repo, CancellationToken ct, int meses = 12) =>
+                IMetricasRepository repo, CancellationToken ct, int meses = 12) =>
             {
                 meses = Math.Clamp(meses, 1, 24);
                 return Results.Ok(await repo.ObtenerEvolucionMensualAsync(meses, ct));
@@ -25,18 +25,18 @@ public static class MetricasEndpoints
             .WithName("EvolucionMensual")
             .WithSummary("Publicaciones, solicitudes, adopciones completadas y usuarios nuevos por mes.");
 
-        grupo.MapGet("/plantas-por-categoria", async (MetricasRepository repo, CancellationToken ct) =>
+        grupo.MapGet("/plantas-por-categoria", async (IMetricasRepository repo, CancellationToken ct) =>
                 Results.Ok(await repo.ObtenerPlantasPorCategoriaAsync(ct)))
             .WithName("PlantasPorCategoria")
             .WithSummary("Publicaciones y adopciones por categoría, con porcentaje de adopción.");
 
-        grupo.MapGet("/embudo", async (MetricasRepository repo, CancellationToken ct) =>
+        grupo.MapGet("/embudo", async (IMetricasRepository repo, CancellationToken ct) =>
                 Results.Ok(await repo.ObtenerEmbudoAsync(ct)))
             .WithName("EmbudoConversion")
             .WithSummary("Embudo de conversión: publicadas → con solicitud → adoptadas.");
 
         grupo.MapGet("/usuarios", async (
-                MetricasRepository repo, CancellationToken ct, int limite = 5) =>
+                IMetricasRepository repo, CancellationToken ct, int limite = 5) =>
             {
                 limite = Math.Clamp(limite, 1, 20);
                 return Results.Ok(await repo.ObtenerUsuariosDestacadosAsync(limite, ct));
@@ -45,7 +45,7 @@ public static class MetricasEndpoints
             .WithSummary("Usuarios con más donaciones y más adopciones completadas.");
 
         grupo.MapGet("/reportes", async (
-                MetricasRepository repo, CancellationToken ct, int limite = 5) =>
+                IMetricasRepository repo, CancellationToken ct, int limite = 5) =>
             {
                 limite = Math.Clamp(limite, 1, 20);
                 return Results.Ok(await repo.ObtenerReportesAsync(limite, ct));

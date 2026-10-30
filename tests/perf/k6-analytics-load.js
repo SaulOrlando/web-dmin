@@ -5,8 +5,9 @@
 //   contra GET /api/metricas/resumen y GET /api/metricas/plantas-por-categoria.
 // Criterio: 200 OK, tiempo promedio < 2000 ms y 0 % de errores.
 //
-// Uso local:
-//   k6 run -e BASE_URL=http://localhost:5080 AdopPlant.Analytics/tests/perf/k6-analytics-load.js
+// Uso local, desde la carpeta AdopPlant.Analytics/:
+//   k6 run -e BASE_URL=http://localhost:5080 tests/perf/k6-analytics-load.js
+// Los reportes quedan en tests/perf/reports/ (ver README del proyecto).
 //
 // Uso con Docker (desde la raiz del workspace):
 //   docker compose -f docker-compose.yml -f compose.k6-analytics.yaml run --rm k6-analytics
@@ -14,6 +15,7 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 import { Rate, Trend } from 'k6/metrics';
+import { construirReportes } from './reporte.js';
 
 const BASE_URL = (__ENV.BASE_URL || 'http://analytics:8080').replace(/\/+$/, '');
 const ADMIN_USER = __ENV.ADMIN_USER || 'admin.panel@adopplant.com';
@@ -96,4 +98,9 @@ export default function (data) {
   erroresHttp.add(categorias.status !== 200);
 
   sleep(0.5);
+}
+
+// Deja la evidencia de SCRUM-96 en tests/perf/reports/.
+export function handleSummary(data) {
+  return construirReportes(data, 'scrum-96-analytics');
 }
