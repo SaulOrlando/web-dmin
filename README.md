@@ -67,7 +67,7 @@ La forma recomendada es el script del proyecto, que ejecuta toda la suite con co
 y genera el informe HTML:
 
 ```powershell
-cd "C:\Users\sault\Documents\para mientras\AdopPlant.Analytics"
+cd "C:\Users\sault\Documents\AdopPlant.Analytics"
 .\probar.ps1
 ```
 
@@ -118,7 +118,7 @@ concurrentes durante 2 minutos** contra `GET /api/metricas/resumen` y
 ### Ejecutar
 
 ```powershell
-cd "C:\Users\sault\Documents\para mientras\AdopPlant.Analytics"
+cd "C:\Users\sault\Documents\AdopPlant.Analytics"
 k6 run -e BASE_URL=http://localhost:5080 tests/perf/k6-analytics-load.js   # ~2 min
 ```
 
@@ -164,7 +164,7 @@ Requisitos: Adoplant (:8000), Analytics (:5080), PostgreSQL con datos sembrados 
 `psql` instalado.
 
 ```powershell
-cd "C:\Users\sault\Documents\para mientras\AdopPlant.Analytics"
+cd "C:\Users\sault\Documents\AdopPlant.Analytics"
 powershell -NoProfile -ExecutionPolicy Bypass -File tests/uat/verificar-uat.ps1
 ```
 
