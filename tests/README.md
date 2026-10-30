@@ -17,7 +17,7 @@ Todo lo de esta carpeta se ejecuta desde la raíz del repositorio
 ## 1. Preparar el entorno
 
 ```powershell
-cd "C:\Users\sault\Documents\AdopPlant.Analytics"
+# Ejecutar desde la raíz del repositorio (la carpeta AdopPlant.Analytics/)
 dotnet restore AdopPlant.Analytics.csproj
 dotnet restore tests/AdopPlant.Analytics.Tests/AdopPlant.Analytics.Tests.csproj
 ```
@@ -142,7 +142,7 @@ administrador. Criterio de salida: **200 OK, promedio y p95 < 2000 ms y 0 % de e
 ### Ejecutar
 
 ```powershell
-cd "C:\Users\sault\Documents\AdopPlant.Analytics"
+# Ejecutar desde la raíz del repositorio (la carpeta AdopPlant.Analytics/)
 k6 run -e BASE_URL=http://localhost:5080 tests/perf/k6-analytics-load.js   # ~2 min
 ```
 
@@ -192,7 +192,7 @@ Requisitos: Adoplant (:8000), Analytics (:5080), PostgreSQL con datos sembrados 
 instalado (se detecta en `Program Files\PostgreSQL\*\bin` o en el `PATH`).
 
 ```powershell
-cd "C:\Users\sault\Documents\AdopPlant.Analytics"
+# Ejecutar desde la raíz del repositorio (la carpeta AdopPlant.Analytics/)
 powershell -NoProfile -ExecutionPolicy Bypass -File tests/uat/verificar-uat.ps1
 ```
 

@@ -64,10 +64,10 @@ dotnet test tests/AdopPlant.Analytics.Tests/AdopPlant.Analytics.Tests.csproj --l
 ## Ver reportes
 
 La forma recomendada es el script del proyecto, que ejecuta toda la suite con cobertura
-y genera el informe HTML:
+y genera el informe HTML. Ejecutar desde la **raíz del repositorio** (la carpeta
+`AdopPlant.Analytics/`):
 
 ```powershell
-cd "C:\Users\sault\Documents\AdopPlant.Analytics"
 .\probar.ps1
 ```
 
@@ -117,8 +117,9 @@ concurrentes durante 2 minutos** contra `GET /api/metricas/resumen` y
 
 ### Ejecutar
 
+Desde la **raíz del repositorio** (la carpeta `AdopPlant.Analytics/`):
+
 ```powershell
-cd "C:\Users\sault\Documents\AdopPlant.Analytics"
 k6 run -e BASE_URL=http://localhost:5080 tests/perf/k6-analytics-load.js   # ~2 min
 ```
 
@@ -163,8 +164,9 @@ Analytics contra el entorno real y **contrasta cada valor con PostgreSQL**:
 Requisitos: Adoplant (:8000), Analytics (:5080), PostgreSQL con datos sembrados y
 `psql` instalado.
 
+Desde la **raíz del repositorio** (la carpeta `AdopPlant.Analytics/`):
+
 ```powershell
-cd "C:\Users\sault\Documents\AdopPlant.Analytics"
 powershell -NoProfile -ExecutionPolicy Bypass -File tests/uat/verificar-uat.ps1
 ```
 
