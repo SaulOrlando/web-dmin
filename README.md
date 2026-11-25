@@ -2,6 +2,11 @@
 
 API auxiliar de métricas administrativas para el proyecto AdopPlant. Proyecto .NET 8 (ASP.NET Core MVC/API).
 
+El panel de métricas forma parte de la web de AdopPlant. Inicia sesión allí y abre
+**Administración → Métricas**. La web reenvía las consultas a esta API, que valida
+el mismo token y consulta PostgreSQL. `FastApi__BaseUrl` apunta a la web
+y API de AdopPlant. En AdopPlant, `ANALYTICS_API_URL` apunta a este servicio.
+
 ## Requisitos
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)

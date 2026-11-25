@@ -14,6 +14,7 @@
 #
 # Parametros utiles:
 #   -BaseUrl http://localhost:5080
+#   -WebBaseUrl http://localhost:8000
 #   -Usuario admin.panel@adopplant.com -Contrasena Admin2026panel
 #   -DbPassword javarberl
 param(
@@ -25,11 +26,13 @@ param(
     [string]$DbName = 'plant',
     [string]$DbUser = 'postgres',
     [string]$DbPassword = 'javarberl',
-    [string]$Psql = ''
+    [string]$Psql = '',
+    [string]$WebBaseUrl = 'http://127.0.0.1:8000'
 )
 
 $ErrorActionPreference = 'Stop'
 $BaseUrl = $BaseUrl.TrimEnd('/')
+$WebBaseUrl = $WebBaseUrl.TrimEnd('/')
 $cultura = [Globalization.CultureInfo]::InvariantCulture
 
 function Buscar-Psql {
@@ -109,10 +112,10 @@ Write-Host "Base de datos: ${DbHost}:${DbPort}/${DbName}" -ForegroundColor DarkG
 # ---------------------------------------------------------------------------
 # UAT-01 · El panel carga y exige autenticacion
 # ---------------------------------------------------------------------------
-$panel = Invoke-WebRequest -Uri "$BaseUrl/" -UseBasicParsing -TimeoutSec 30
+$panel = Invoke-WebRequest -Uri "$WebBaseUrl/views/admin.html" -UseBasicParsing -TimeoutSec 30
 $loginInvalido = $null
 try {
-    Invoke-RestMethod -Method Post -Uri "$BaseUrl/api/sesion" -TimeoutSec 30 `
+    Invoke-RestMethod -Method Post -Uri "$WebBaseUrl/api/auth/login" -TimeoutSec 30 `
         -ContentType 'application/json' `
         -Body (@{ identificador = $Usuario; contrasena = 'incorrecta' } | ConvertTo-Json) | Out-Null
     $loginInvalido = 200
@@ -123,7 +126,7 @@ catch {
 
 Registrar 'UAT-01' 'El panel carga y rechaza credenciales invalidas' @(
     (Comprobar 'El panel responde 200' 200 $panel.StatusCode),
-    (Comprobar 'El panel sirve el HTML del panel' 'si' $(if ($panel.Content -match 'AdopPlant|Analytics') { 'si' } else { 'no' })),
+    (Comprobar 'Administración incluye la sección Métricas' 'si' $(if ($panel.Content -match 'data-admin-tab="metricas"') { 'si' } else { 'no' })),
     (Comprobar 'Login con contrasena incorrecta devuelve 401' 401 $loginInvalido)
 )
 

@@ -141,15 +141,16 @@ app.UseCors("Clientes");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
-
 // Endpoints informativos (públicos)
+var panelWeb = $"{urlFastApi.TrimEnd('/')}/views/admin.html#metricas";
+app.MapGet("/", () => Results.Redirect(panelWeb)).ExcludeFromDescription();
+app.MapGet("/index.html", () => Results.Redirect(panelWeb)).ExcludeFromDescription();
+
 app.MapGet("/api", () => Results.Ok(new
 {
     servicio = "AdopPlant Analytics API",
     version = "v1",
-    panel = "/index.html",
+    panel = panelWeb,
     documentacion = "/swagger",
     salud = "/health",
 })).WithTags("General");
